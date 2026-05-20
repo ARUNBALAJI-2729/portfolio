@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { 
   MessageSquare, 
@@ -27,6 +27,143 @@ import {
   Zap,
   Activity
 } from "lucide-react";
+
+// Interactive Particle Constellation Background Component
+function ParticleBackground() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 140 };
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    };
+
+    const initParticles = () => {
+      particles = [];
+      // Dynamic particle density based on screen dimensions
+      const densityMultiplier = 0.00012; // Adjusted for a dense, visually rich field
+      const numberOfParticles = Math.min(
+        Math.floor(canvas.width * canvas.height * densityMultiplier),
+        150 // Cap to prevent performance drop on 4k displays
+      );
+      
+      for (let i = 0; i < numberOfParticles; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: Math.random() * 2 + 0.8,
+          // Assign random neon color types (purple, blue, cyan)
+          colorType: Math.random(),
+          alpha: Math.random() * 0.4 + 0.15
+        });
+      }
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update & render particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce back when hitting boundary walls
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        // Determine particle color
+        let colorString = "rgba(139, 92, 246,"; // Purple (default)
+        if (p.colorType < 0.33) {
+          colorString = "rgba(59, 130, 246,"; // Blue
+        } else if (p.colorType < 0.66) {
+          colorString = "rgba(6, 182, 212,"; // Cyan
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = colorString + p.alpha + ")";
+        ctx.fill();
+
+        // Draw connections between neighboring particles (Constellation nodes)
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            const lineOpacity = (1 - dist / 110) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(139, 92, 246, ${lineOpacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        // Connect particles to mouse coordinate
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < mouse.radius) {
+            const lineOpacity = (1 - dist / mouse.radius) * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            // Cyan-blue laser link to cursor
+            ctx.strokeStyle = `rgba(6, 182, 212, ${lineOpacity})`;
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(draw);
+    };
+
+    window.addEventListener("resize", resizeCanvas);
+    
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", handleMouseLeave);
+
+    resizeCanvas();
+    draw();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} id="particle-canvas" aria-hidden="true" />;
+}
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -133,6 +270,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Particle constellation canvas background */}
+      <ParticleBackground />
+
       {/* Sticky Header Navigation */}
       <header className="header" id="navbar">
         <div className="container nav-container">
@@ -242,7 +382,7 @@ export default function Home() {
             <div className="uptime-badge" id="availability-badge">
               <span className="uptime-dot"></span> Available for Opportunities | System Status: Active
             </div>
-            <h1 className="hero-title">
+            <h1 className="hero-title text-glowing">
               Hi, I'm <br />
               <span className="text-gradient">Arunbalaji A</span>
             </h1>
@@ -255,7 +395,7 @@ export default function Home() {
               Dedicated Computer Science Graduate with hands-on experience as the primary escalation point for global Next.js web applications. Expert at debugging performance bottlenecks in AI-integrated environments, managing incidents, and translating complex user issues into technical fixes.
             </p>
             <div className="hero-actions">
-              <a href="#contact" className="btn btn-primary" id="cta-contact">
+              <a href="#contact" className="btn btn-primary btn-glow" id="cta-contact">
                 Let's Connect <ArrowRight size={18} />
               </a>
               <a href="#projects" className="btn btn-secondary" id="cta-projects">
@@ -291,7 +431,7 @@ export default function Home() {
       {/* Experience Timeline Section */}
       <section className="section-padding" id="experience">
         <div className="container">
-          <h2 className="section-title text-gradient" id="experience-title">Professional Experience</h2>
+          <h2 className="section-title text-gradient text-glowing" id="experience-title">Professional Experience</h2>
           <p className="section-subtitle">A track record of customer satisfaction, technical escalations, and performance monitoring.</p>
           
           <div className="timeline">
@@ -374,7 +514,7 @@ export default function Home() {
       {/* Projects Showcase Section */}
       <section className="section-padding bg-secondary" id="projects">
         <div className="container">
-          <h2 className="section-title text-gradient" id="projects-title">Featured Projects</h2>
+          <h2 className="section-title text-gradient text-glowing" id="projects-title">Featured Projects</h2>
           <p className="section-subtitle">Real-world applications focusing on network telemetry, deep learning, and user utility.</p>
           
           <div className="projects-grid">
@@ -512,7 +652,7 @@ export default function Home() {
       {/* Technical Skills Category Grid */}
       <section className="section-padding" id="skills">
         <div className="container">
-          <h2 className="section-title text-gradient" id="skills-title">Technical Expertise</h2>
+          <h2 className="section-title text-gradient text-glowing" id="skills-title">Technical Expertise</h2>
           <p className="section-subtitle">Structured systems, analytical tooling, and customer escalation management workflows.</p>
 
           <div className="skills-container">
@@ -584,7 +724,7 @@ export default function Home() {
       {/* Contact Section & Interactive WhatsApp Chat */}
       <section className="section-padding bg-secondary" id="contact">
         <div className="container">
-          <h2 className="section-title text-gradient" id="contact-title">Let's Connect</h2>
+          <h2 className="section-title text-gradient text-glowing" id="contact-title">Let's Connect</h2>
           <p className="section-subtitle">Get in touch via standard channels, or start an instant chat using the WhatsApp simulator.</p>
           
           <div className="contact-grid">
