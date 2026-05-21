@@ -392,7 +392,7 @@ export default function Home() {
               <span className="text-gradient-accent">Next.js & AI Web Specialist</span>
             </h2>
             <p className="hero-desc">
-              Dedicated Computer Science Graduate with hands-on experience as the primary escalation point for global Next.js web applications. Expert at debugging performance bottlenecks in AI-integrated environments, managing incidents, and translating complex user issues into technical fixes.
+              Highly motivated technical professional combining a B.E. in Computer Science with a passion for delivering exceptional customer service. Adept at breaking down complex technical issues with patience and clarity. Seeking to leverage strong problem-solving abilities and familiarity with Microsoft ecosystems to resolve user challenges efficiently in a fast-paced support environment.
             </p>
             <div className="hero-actions">
               <a href="#contact" className="btn btn-primary btn-glow" id="cta-contact">
