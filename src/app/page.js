@@ -446,7 +446,7 @@ export default function Home() {
                     <h3 className="timeline-company">Saku AI Tech</h3>
                     <div className="timeline-role">Customer Support Associate</div>
                   </div>
-                  <span className="timeline-date">Nov 2025 – Apr 2026</span>
+                  <span className="timeline-date">Jan 2026 – June 2026</span>
                 </div>
                 <ul className="timeline-list">
                   <li>
