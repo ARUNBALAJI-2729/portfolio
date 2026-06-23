@@ -12,13 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Arunbalaji A | Technical Support Associate & Next.js Specialization",
-  description: "Technical Support Associate specializing in Next.js web applications, root cause analysis, and AI-integrated troubleshooting. Discover my portfolio, skills, and experience.",
-  keywords: ["Arunbalaji A", "Technical Support Associate", "Next.js Support", "Saku AI Tech", "IT Troubleshooting", "B.E Computer Science", "API Monitoring", "Sethu Institute of Technology"],
+  title: "Arunbalaji A | Customer Support Associate",
+  description: "Customer Support Associate specializing in web applications, root cause analysis, and AI-integrated troubleshooting. Discover my portfolio, skills, and experience.",
+  keywords: ["Arunbalaji A", "Customer Support Associate", "Saku AI Tech", "IT Troubleshooting", "B.E Computer Science", "API Monitoring", "Sethu Institute of Technology"],
   authors: [{ name: "Arunbalaji A" }],
   openGraph: {
-    title: "Arunbalaji A | Technical Support Associate",
-    description: "Technical Support Associate specializing in Next.js applications and root cause analysis.",
+    title: "Arunbalaji A | Customer Support Associate",
+    description: "Customer Support Associate specializing in web applications and root cause analysis.",
     type: "website",
     locale: "en_US",
   },

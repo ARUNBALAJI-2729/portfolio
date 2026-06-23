@@ -387,9 +387,9 @@ export default function Home() {
               <span className="text-gradient">Arunbalaji A</span>
             </h1>
             <h2 className="hero-subtitle">
-              <span>Technical Support Associate</span>
+              <span>Customer Support Associate</span>
               <span className="text-muted">|</span>
-              <span className="text-gradient-accent">Next.js & AI Web Specialist</span>
+              <span className="text-gradient-accent">AI Web Specialist</span>
             </h2>
             <p className="hero-desc">
               Highly motivated technical professional combining a B.E. in Computer Science with a passion for delivering exceptional customer service. Adept at breaking down complex technical issues with patience and clarity. Seeking to leverage strong problem-solving abilities and familiarity with Microsoft ecosystems to resolve user challenges efficiently in a fast-paced support environment.
@@ -444,7 +444,7 @@ export default function Home() {
                 <div className="timeline-header">
                   <div>
                     <h3 className="timeline-company">Saku AI Tech</h3>
-                    <div className="timeline-role">Technical Support Associate</div>
+                    <div className="timeline-role">Customer Support Associate</div>
                   </div>
                   <span className="timeline-date">Nov 2025 – Apr 2026</span>
                 </div>
